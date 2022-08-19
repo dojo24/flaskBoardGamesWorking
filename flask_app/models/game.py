@@ -100,19 +100,21 @@ class Game:
             return False
         else:
             for row in results:
-                # print("gameLikes Each Row: ", row)
-                if not row['user.id'] == None:
-                    userData = {
-                        'id' : results['user.id'],
-                        'firstName' : results['firstName'],
-                        'lastName' : results['lastName'],
-                        'email' : results['email'],
-                        'password' : results['password'],
-                        'createdAt' : results['user.createdAt'],
-                        'updatedAt' : results['user.updatedAt']
-                    }
-                    liker = user.User(userData)
-                    allLikes.append(liker)
+                print("gameLikes Each Row: ", row)
+                userData = {
+                    'id' : results['user.id'],
+                    'firstName' : results['firstName'],
+                    'lastName' : results['lastName'],
+                    'email' : results['email'],
+                    'password' : results['password'],
+                    'createdAt' : results['user.createdAt'],
+                    'updatedAt' : results['user.updatedAt']
+                }
+                print('userData before class assign:', userData)
+                liker = user.User(userData)
+                print("liker after class assign before append:", liker)
+                allLikes.append(liker)
+                print("allLikes list after append:", allLikes)
         return allLikes
 
     @classmethod
