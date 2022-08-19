@@ -2,6 +2,7 @@ from flask_app import app
 from flask import render_template, redirect, session, request, flash
 from flask_app.models.game import Game
 from flask_app.models.user import User
+from flask_app.models.like import Like
 
 
 @app.route('/dashboard/')
@@ -13,7 +14,7 @@ def dashboard():
             'id': session['user_id']
         }
         theUser = User.getOne(data)
-        theGames = Game.allGamesWithUserAndLikes()
+        theGames = Game.allGamesWithCreatorAndLikes()
         theUsers = User.getAll()
         # print('theGames controller: ', theGames)
         return render_template('dashboard.html', user=theUser, games=theGames, users=theUsers)
@@ -53,7 +54,19 @@ def viewGame(game_id):
         }
         theUser = User.getOne(data)
         theGame = Game.getOne(gameData)
-        return render_template('viewGame.html', user=theUser, game=theGame)
+        theLikers = Game.oneGameWithCreatorAndLikes(gameData)
+        print('the likers: ', theLikers)
+        return render_template('viewGame.html', user=theUser, game=theGame, likers=theLikers)
+
+@app.route('/game/<int:game_id>/createLike/', methods=['post'])
+def createLike(game_id):
+    data = {
+        'game_id': game_id,
+        'user_id': session['user_id']
+    }
+    Like.save(data)
+    print('saving like:', data)
+    return redirect(f'/game/{game_id}/view/')
 
 @app.route('/game/<int:game_id>/edit/')
 def editGame(game_id):

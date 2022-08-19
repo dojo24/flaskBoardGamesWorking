@@ -26,6 +26,20 @@
     <main>
         <h3>Board Game Title: {{game.title}}</h3>
         <h3>Information: {{game.info}}</h3>
+        <h3>Like this Board Game?</h3>
+        <form action="/game/{{game.id}}/createLike/" method="post">
+            <button>I like this game</button>
+        </form>
+        <table>
+            <tr>
+                <th>Who else likes this board game</th>
+            </tr>
+            {% for liker in likers.likes %}
+                <tr>
+                    <td>{{liker.fullName()}}</td>
+                </tr>
+            {% endfor %}
+        </table>
     </main>
     <footer>
 

@@ -48,7 +48,27 @@ class Game:
         return connectToMySQL(cls.db).query_db(query, data)
 
     @classmethod
-    def gameUser(cls, data):
+    def getAllWithCreators(cls):
+        query = 'SELECT * FROM game LEFT JOIN user ON game.user_id = user.id;'
+        results = connectToMySQL(cls.db).query_db(query)
+        allGames = []
+        for row in results:
+            game = cls(row)
+            creatorData = {
+                'id' : results['user.id'],
+                'firstName' : results['firstName'],
+                'lastName' : results['lastName'],
+                'email' : results['email'],
+                'password' : results['password'],
+                'createdAt' : results['user.createdAt'],
+                'updatedAt' : results['user.updatedAt']
+            }
+            game.user = user.User(creatorData)
+            allGames.append(game)
+        return allGames
+    
+    @classmethod
+    def gameCreator(cls, data): 
         query = 'SELECT * FROM game LEFT JOIN user ON game.user_id = user.id WHERE game.id = %(id)s;'
         results = connectToMySQL(cls.db).query_db(query, data)
         if len(results) < 1:
@@ -66,9 +86,9 @@ class Game:
             return user.User(userData)
     
     @classmethod
-    def getGameUser(cls, data):
+    def getGameWithCreator(cls, data):
         game = cls.getOne(data)
-        game.user = cls.gameUser(data)
+        game.user = cls.gameCreator(data)
         return game
 
     @classmethod
@@ -83,27 +103,27 @@ class Game:
                 # print("gameLikes Each Row: ", row)
                 if not row['user.id'] == None:
                     userData = {
-                        'id' : results[0]['user.id'],
-                        'firstName' : results[0]['firstName'],
-                        'lastName' : results[0]['lastName'],
-                        'email' : results[0]['email'],
-                        'password' : results[0]['password'],
-                        'createdAt' : results[0]['user.createdAt'],
-                        'updatedAt' : results[0]['user.updatedAt']
+                        'id' : results['user.id'],
+                        'firstName' : results['firstName'],
+                        'lastName' : results['lastName'],
+                        'email' : results['email'],
+                        'password' : results['password'],
+                        'createdAt' : results['user.createdAt'],
+                        'updatedAt' : results['user.updatedAt']
                     }
                     liker = user.User(userData)
                     allLikes.append(liker)
         return allLikes
 
     @classmethod
-    def oneGameWithUserAndLikes(cls, data):
+    def oneGameWithCreatorAndLikes(cls, data): 
         game = cls.getOne(data)
-        game.user = cls.gameUser(data)
+        game.user = cls.gameCreator(data)
         game.likes = cls.gameLikes(data)
         return game
 
     @classmethod
-    def allGamesWithUserAndLikes(cls):
+    def allGamesWithCreatorAndLikes(cls):
         query = 'SELECT * FROM game;'
         results = connectToMySQL(cls.db).query_db(query)
         allGames = []
@@ -112,7 +132,7 @@ class Game:
             data = {
                 'id': game.id
             }
-            game.user = cls.gameUser(data)
+            game.user = cls.gameCreator(data)
             game.likes = cls.gameLikes(data)
             allGames.append(game)
         return allGames
