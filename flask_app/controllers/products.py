@@ -56,7 +56,7 @@ def viewProduct(product_id):
         theUser = User.getOne(data)
         # theItem = Product.getOne(itemData) # Before adding in join statement
         theItem = Product.creator(itemData) # After adding in join
-        theOrders = Product.allWhoOrdered(itemData)
+        theOrders = Product.whoOrdered(itemData)
         # print('theOrders', theOrders)
         return render_template('viewProduct.html', user=theUser, item=theItem, orders=theOrders)
 

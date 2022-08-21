@@ -35,9 +35,9 @@
             <tr>
                 <th>List of who has ordered this</th>
             </tr>
-            {% for order in theOrders %}
+            {% for order in orders %}
                 <tr>
-                    <td>{{order.firstName}}</td>
+                    <td>{{order.who.firstName}}</td>
                 </tr>
             {% endfor %}
     </main>

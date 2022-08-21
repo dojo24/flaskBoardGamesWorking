@@ -15,7 +15,6 @@ class Product:
         self.creator = []
         self.ordered = []
         self.who = None
-        self.order = None
 
 
     @classmethod
@@ -103,34 +102,24 @@ class Product:
         return allOrdered
 
     @classmethod
-    def allWhoOrdered(cls, data):
+    def whoOrdered(cls, data):
         query = 'SELECT * FROM product LEFT JOIN orderd ON product.id = orderd.product_id LEFT JOIN user ON orderd.user_id = user.id WHERE product.id = %(id)s;'
         results = connectToMySQL(cls.db).query_db(query, data)
-        print('the results', results)
-        allOrdered = []
+        theOrders = []
         for row in results:
-            product = cls(results[0])
-            orderedData = {
-                'id': row['orderd.id'],
-                'product_id': row['product_id'],
-                'user_id': row['user_id'],
-                'createdAt': row['orderd.createdAt'],
-                'updatedAt': row['orderd.updatedAt']
-            }
-            product.ordered = orderd.Ordered(orderedData)
-            print("the orderData", orderedData)
-            print("product.ordered", product.ordered)
-            userData = {
-                'id': results['user.id'],
-                'firstName': results['firstName'],
-                'lastName': results['lastName'],
-                'email': results['email'],
-                'password': results['password'],
-                'createdAt': results['user.createdAt'],
-                'updatedAt': results['user.updatedAt']
-            }
-            # product.who = user.User(userData)
-            print('the userData', userData)
-            # print('product.who', product.who)
-            allOrdered.append(product)
-        return allOrdered
+            item = cls(row)
+            if not row['user.id'] == None:
+                orderer = {
+                    'id': row['user.id'],
+                    'firstName': row['firstName'],
+                    'lastName': row['lastName'],
+                    'email': row['email'],
+                    'password': row['password'],
+                    'createdAt': row['user.createdAt'],
+                    'updatedAt': row['user.updatedAt']
+                }
+                item.who = user.User(orderer)
+                theOrders.append(item)
+        return theOrders
+
+        
