@@ -5,11 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <title>Add Board Game</title>
+    <title>Add Product</title>
 </head>
 <body>
     <header>
-        <h1>Add Board Game</h1>
+        <h1>Add Product</h1>
         <nav>
             {% block menu %} {% include 'menu.html' %} {% endblock menu %}
         </nav>
@@ -24,16 +24,20 @@
         {% endwith %}
     </div>
     <main>
-        <form action="/createGame/" method="post">
+        <form action="/createProduct/" method="post">
             <section>
-                <label for="title">Game Title</label>
-                <input type="text" name="title">
+                <label for="item">Item Name: </label>
+                <input type="text" name="item" id="">
             </section>
             <section>
-                <label for="info">Information</label>
-                <textarea name="info" cols="30" rows="10"></textarea>
+                <label for="info">Description</label>
+                <textarea name="info" id="" cols="30" rows="10"></textarea>
             </section>
-            <button>Add Board Game</button>
+            <section>
+                <label for="price">Price: </label>
+                <input type="text" name="price" id="">
+            </section>
+            <button>Add Product</button>
         </form>
     </main>
     <footer>

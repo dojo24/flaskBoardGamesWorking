@@ -24,30 +24,32 @@
         {% endwith %}
     </div>
     <main>
-        <h2>Board Games</h2>
+        <h2>Flask Store</h2>
         <table>
             <tr>
-                <th>Game Title</th>
-                <th>Added By</th>
-                <th># of Users who have played</th>
+                <th>Item Name</th>
+                <th>Price</th>
+                <th>Added by</th>
+                <th>Times Ordered</th>
                 <th>Actions</th>
             </tr>
-            {% for game in games %}
+            {% for item in items %}
                 <tr>
-                    <td>{{game.title}}</td>
+                    <td>{{item.item}}</td>
+                    <td>${{item.price}}</td>
                     <td>
                         {% for u in users %}
-                            {% if u.id == game.user_id %}
-                                {{u.firstName}}
+                            {% if u.id == item.user_id %}
+                                {{u.fullName()}}
                             {% endif %}
                         {% endfor %}
                     </td>
-                    <td>{{game.likes|length}}</td>
+                    <td>{{item.ordered|length}}</td>
                     <td>
-                        {% if user.id == game.user_id %}
-                            <button><a href="/game/{{game.id}}/view/">View</a></button><button><a href="/game/{{game.id}}/edit/">Edit</a></button><button><a href="/game/{{game.id}}/delete/">Delete</a></button>
+                        {% if user.id == item.user_id %}
+                            <button><a href="/product/{{item.id}}/view/">View</a></button><button><a href="/product/{{item.id}}/edit/">Edit</a></button><button><a href="/product/{{item.id}}/delete/">Delete</a></button>
                         {% else %}
-                            <button><a href="/game/{{game.id}}/view/">View</a></button>
+                            <button><a href="/product/{{item.id}}/view/">View</a></button>
                         {% endif %}
                     </td>
                 </tr>

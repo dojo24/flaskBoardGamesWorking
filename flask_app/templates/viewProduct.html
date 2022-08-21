@@ -5,11 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <title>{{game.title}}</title>
+    <title>{{item.item}}</title>
 </head>
 <body>
     <header>
-        <h1>{{game.title}}</h1>
+        <h1>{{item.item}}</h1>
         <nav>
             {% block menu %} {% include 'menu.html' %} {% endblock menu %}
         </nav>
@@ -24,22 +24,22 @@
         {% endwith %}
     </div>
     <main>
-        <h3>Board Game Title: {{game.title}}</h3>
-        <h3>Information: {{game.info}}</h3>
-        <h3>Like this Board Game?</h3>
-        <form action="/game/{{game.id}}/createLike/" method="post">
-            <button>I like this game</button>
+        <h2>Product Name: {{item.item}}</h2>
+        <h3>Product Price: ${{item.price}}</h3>
+        <h3><textarea cols="30" rows="10">{{item.info}}</textarea></h3>
+        <h3>Product Added By: {{item.creator.fullName()}}</h3>
+        <form action="/product/{{item.id}}/order/" method="post">
+            <button>Order Item</button>
         </form>
         <table>
             <tr>
-                <th>Who else likes this board game</th>
+                <th>List of who has ordered this</th>
             </tr>
-            {% for liker in likers.likes %}
+            {% for order in theOrders %}
                 <tr>
-                    <td>{{liker.fullName()}}</td>
+                    <td>{{order.firstName}}</td>
                 </tr>
             {% endfor %}
-        </table>
     </main>
     <footer>
 
